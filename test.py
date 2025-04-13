@@ -1,4 +1,5 @@
 import streamlit as st
+import pandas as pd
 st.title("Ma première application Streamlit")
 st.write("Bienvenue dans ce cours !")
 nom = st.text_input("Quel est votre nom ?")
@@ -30,3 +31,18 @@ if uploaded_file:
     st.write(df.describe())
     colonne = st.selectbox("Choisissez une colonne numérique :",df.select_dtypes(include=np.number).columns)
     st.line_chart(df[colonne])
+    
+def show_sheets_page():
+    st.title("Lecture de Google Sheets dans Streamlit")
+
+    # Remplace cet ID par celui de ta feuille Google Sheets
+    sheet_id = "141zRmgsPVjZk9t1jn0vVUckNKfDKs2WGIr9WJb4-Yqw"
+    sheet_name = "ensamte"
+    url = f"https://docs.google.com/spreadsheets/d/{sheet_id}/gviz/tq?tqx=out:csv&sheet={sheet_name}"
+
+    try:
+        df = pd.read_csv(url)
+        st.success("Données chargées avec succès depuis Google Sheets !")
+        st.dataframe(df)
+    except Exception as e:
+        st.error(f"Erreur lors du chargement des données : {e}")
